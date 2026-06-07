@@ -1,0 +1,28 @@
+# dependencies
+
+node_modules/
+\*\*/node_modules/
+
+# uploads
+
+uploads/
+backend/uploads/
+
+# build
+
+dist/
+build/
+
+# env
+
+.env
+.env.\*
+
+# logs
+
+\*.log
+
+# IDE
+
+.vscode/
+.idea/
