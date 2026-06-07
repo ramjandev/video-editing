@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { setExporting, setExportUrl } from '@/store/editorSlice';
+import { setExporting } from '@/store/editorSlice';
 
 export function ExportModal() {
   const dispatch = useAppDispatch();

@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { splitClip, setSelectedClip, deleteClip, moveClip, setPlayhead, addAssetToTimeline } from '@/store/editorSlice';
 import { triggerAutosave } from '@/store/thunks';
-import type { Track, Clip } from '@/types';
-import { store } from '@/store';
+import type { Clip } from '@/types';
 
 const pixelsPerSecond = 20;
 
@@ -47,7 +46,7 @@ function PlayheadIndicator() {
 }
 
 // Extracted AutoScroller
-function AutoScroller({ scrollContainerRef }: { scrollContainerRef: React.RefObject<HTMLDivElement> }) {
+function AutoScroller({ scrollContainerRef }: { scrollContainerRef: React.RefObject<HTMLDivElement | null> }) {
   const playhead = useAppSelector(state => state.editor.playhead);
   const isPlaying = useAppSelector(state => state.editor.isPlaying);
 

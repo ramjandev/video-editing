@@ -178,7 +178,6 @@ const editorSlice = createSlice({
       
       let targetClip: Clip | null = null;
       let sourceTrack: any = null;
-      let sourceTrackIndex = -1;
 
       for (let i = 0; i < state.sceneGraph.tracks.length; i++) {
         const track = state.sceneGraph.tracks[i];
@@ -186,7 +185,6 @@ const editorSlice = createSlice({
         if (clipIndex !== -1) {
           targetClip = track.clips[clipIndex];
           sourceTrack = track;
-          sourceTrackIndex = i;
           break;
         }
       }
