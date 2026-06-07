@@ -1,0 +1,251 @@
+{
+  "projectId": "6a24f5830345bd830759d2d2",
+  "duration": 256.05021,
+  "fps": 30,
+  "resolution": {
+    "w": 1920,
+    "h": 1080
+  },
+  "tracks": [
+    {
+      "id": "track_1",
+      "type": "video",
+      "clips": [
+        {
+          "id": "clip_1780807101558",
+          "assetId": "6a24d91b5382d45aa2a6c1cd",
+          "asset": {
+            "_id": "6a24d91b5382d45aa2a6c1cd",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "duration": 30.03003,
+            "type": "video",
+            "public_id": "video_editor_assets/rc9l5f5xfhlvs2aluxla",
+            "createdAt": "2026-06-07T02:36:11.857Z",
+            "updatedAt": "2026-06-07T02:36:11.857Z",
+            "__v": 0
+          },
+          "startTime": 0,
+          "endTime": 30.03003,
+          "trimIn": 0,
+          "trimOut": 30.03003
+        },
+        {
+          "id": "clip_1780807102533",
+          "assetId": "6a24d4a6baf750339bd2407d",
+          "asset": {
+            "_id": "6a24d4a6baf750339bd2407d",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "duration": 7.64,
+            "type": "video",
+            "public_id": "video_editor_assets/b6uoiytrydlookwzjedq",
+            "createdAt": "2026-06-07T02:17:10.764Z",
+            "updatedAt": "2026-06-07T02:17:10.764Z",
+            "__v": 0
+          },
+          "startTime": 30.03003,
+          "endTime": 37.67003,
+          "trimIn": 0,
+          "trimOut": 7.64
+        },
+        {
+          "id": "clip_1780807103101",
+          "assetId": "6a24d91b5382d45aa2a6c1cd",
+          "asset": {
+            "_id": "6a24d91b5382d45aa2a6c1cd",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "duration": 30.03003,
+            "type": "video",
+            "public_id": "video_editor_assets/rc9l5f5xfhlvs2aluxla",
+            "createdAt": "2026-06-07T02:36:11.857Z",
+            "updatedAt": "2026-06-07T02:36:11.857Z",
+            "__v": 0
+          },
+          "startTime": 37.67003,
+          "endTime": 67.70006,
+          "trimIn": 0,
+          "trimOut": 30.03003
+        },
+        {
+          "id": "clip_1780807103622",
+          "assetId": "6a24d4a6baf750339bd2407d",
+          "asset": {
+            "_id": "6a24d4a6baf750339bd2407d",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "duration": 7.64,
+            "type": "video",
+            "public_id": "video_editor_assets/b6uoiytrydlookwzjedq",
+            "createdAt": "2026-06-07T02:17:10.764Z",
+            "updatedAt": "2026-06-07T02:17:10.764Z",
+            "__v": 0
+          },
+          "startTime": 67.70006,
+          "endTime": 75.34006,
+          "trimIn": 0,
+          "trimOut": 7.64
+        },
+        {
+          "id": "clip_1780807104022",
+          "assetId": "6a24d91b5382d45aa2a6c1cd",
+          "asset": {
+            "_id": "6a24d91b5382d45aa2a6c1cd",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "duration": 30.03003,
+            "type": "video",
+            "public_id": "video_editor_assets/rc9l5f5xfhlvs2aluxla",
+            "createdAt": "2026-06-07T02:36:11.857Z",
+            "updatedAt": "2026-06-07T02:36:11.857Z",
+            "__v": 0
+          },
+          "startTime": 75.34006,
+          "endTime": 105.37008999999999,
+          "trimIn": 0,
+          "trimOut": 30.03003
+        },
+        {
+          "id": "clip_1780807104422",
+          "assetId": "6a24d4a6baf750339bd2407d",
+          "asset": {
+            "_id": "6a24d4a6baf750339bd2407d",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "duration": 7.64,
+            "type": "video",
+            "public_id": "video_editor_assets/b6uoiytrydlookwzjedq",
+            "createdAt": "2026-06-07T02:17:10.764Z",
+            "updatedAt": "2026-06-07T02:17:10.764Z",
+            "__v": 0
+          },
+          "startTime": 105.37008999999999,
+          "endTime": 113.01008999999999,
+          "trimIn": 0,
+          "trimOut": 7.64
+        },
+        {
+          "id": "clip_1780807104790",
+          "assetId": "6a24d91b5382d45aa2a6c1cd",
+          "asset": {
+            "_id": "6a24d91b5382d45aa2a6c1cd",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "duration": 30.03003,
+            "type": "video",
+            "public_id": "video_editor_assets/rc9l5f5xfhlvs2aluxla",
+            "createdAt": "2026-06-07T02:36:11.857Z",
+            "updatedAt": "2026-06-07T02:36:11.857Z",
+            "__v": 0
+          },
+          "startTime": 113.01008999999999,
+          "endTime": 143.04012,
+          "trimIn": 0,
+          "trimOut": 30.03003
+        },
+        {
+          "id": "clip_1780807105197",
+          "assetId": "6a24d4a6baf750339bd2407d",
+          "asset": {
+            "_id": "6a24d4a6baf750339bd2407d",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "duration": 7.64,
+            "type": "video",
+            "public_id": "video_editor_assets/b6uoiytrydlookwzjedq",
+            "createdAt": "2026-06-07T02:17:10.764Z",
+            "updatedAt": "2026-06-07T02:17:10.764Z",
+            "__v": 0
+          },
+          "startTime": 143.04012,
+          "endTime": 150.68012,
+          "trimIn": 0,
+          "trimOut": 7.64
+        },
+        {
+          "id": "clip_1780807105581",
+          "assetId": "6a24d91b5382d45aa2a6c1cd",
+          "asset": {
+            "_id": "6a24d91b5382d45aa2a6c1cd",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "duration": 30.03003,
+            "type": "video",
+            "public_id": "video_editor_assets/rc9l5f5xfhlvs2aluxla",
+            "createdAt": "2026-06-07T02:36:11.857Z",
+            "updatedAt": "2026-06-07T02:36:11.857Z",
+            "__v": 0
+          },
+          "startTime": 150.68012,
+          "endTime": 180.71015,
+          "trimIn": 0,
+          "trimOut": 30.03003
+        },
+        {
+          "id": "clip_1780807106005",
+          "assetId": "6a24d4a6baf750339bd2407d",
+          "asset": {
+            "_id": "6a24d4a6baf750339bd2407d",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798630/video_editor_assets/b6uoiytrydlookwzjedq.mp4",
+            "duration": 7.64,
+            "type": "video",
+            "public_id": "video_editor_assets/b6uoiytrydlookwzjedq",
+            "createdAt": "2026-06-07T02:17:10.764Z",
+            "updatedAt": "2026-06-07T02:17:10.764Z",
+            "__v": 0
+          },
+          "startTime": 180.71015,
+          "endTime": 183.95,
+          "trimIn": 0,
+          "trimOut": 3.23984999999999
+        },
+        {
+          "id": "clip_1780807107175",
+          "assetId": "6a24d91b5382d45aa2a6c1cd",
+          "asset": {
+            "_id": "6a24d91b5382d45aa2a6c1cd",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780799772/video_editor_assets/rc9l5f5xfhlvs2aluxla.mp4",
+            "duration": 30.03003,
+            "type": "video",
+            "public_id": "video_editor_assets/rc9l5f5xfhlvs2aluxla",
+            "createdAt": "2026-06-07T02:36:11.857Z",
+            "updatedAt": "2026-06-07T02:36:11.857Z",
+            "__v": 0
+          },
+          "startTime": 226.02017999999998,
+          "endTime": 256.05021,
+          "trimIn": 0,
+          "trimOut": 30.03003
+        }
+      ]
+    },
+    {
+      "id": "track_1780807051446",
+      "type": "audio",
+      "clips": [
+        {
+          "id": "clip_1780807109631",
+          "assetId": "6a24d5d5baf750339bd24081",
+          "asset": {
+            "_id": "6a24d5d5baf750339bd24081",
+            "original_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798934/video_editor_assets/jsq1zjlckbrp49nlkhqm.mp3",
+            "preview_url": "https://res.cloudinary.com/dmeg0t89b/video/upload/v1780798934/video_editor_assets/jsq1zjlckbrp49nlkhqm.mp3",
+            "duration": 183.984,
+            "type": "audio",
+            "public_id": "video_editor_assets/jsq1zjlckbrp49nlkhqm",
+            "createdAt": "2026-06-07T02:22:13.556Z",
+            "updatedAt": "2026-06-07T02:22:13.556Z",
+            "__v": 0
+          },
+          "startTime": 0,
+          "endTime": 183.95,
+          "trimIn": 0,
+          "trimOut": 183.95
+        }
+      ]
+    }
+  ]
+}
