@@ -21,7 +21,7 @@ export function ExportModal() {
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
             <a 
-              href={exportUrl} 
+              href={exportUrl.replace('/uploads/', '/api/download/')} 
               target="_blank"
               download
               className="bg-blue-600 hover:bg-blue-500 text-white font-medium py-3 px-6 rounded w-full text-center transition-colors mb-3"

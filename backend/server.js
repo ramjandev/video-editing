@@ -25,21 +25,41 @@ app.use(express.json());
 // Serve static files from uploads directory (for exported videos)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Use fluent-ffmpeg for duration probing
+import ffmpeg from 'fluent-ffmpeg';
+import ffmpegStatic from 'ffmpeg-static';
+import ffprobeStatic from 'ffprobe-static';
 
-// Configure Multer (store in memory, then upload to Cloudinary)
-const storage = multer.memoryStorage();
+ffmpeg.setFfmpegPath(ffmpegStatic);
+ffmpeg.setFfprobePath(ffprobeStatic.path);
+
+// Configure Multer for local storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'uploads'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
 const upload = multer({ storage });
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
+
+// Helper to probe duration
+const probeDuration = (filePath) => {
+  return new Promise((resolve, reject) => {
+    ffmpeg.ffprobe(filePath, (err, metadata) => {
+      if (err) return reject(err);
+      const duration = metadata.format.duration;
+      resolve(duration || 0);
+    });
+  });
+};
 
 // Routes
 
@@ -54,32 +74,28 @@ app.post('/api/assets', upload.single('file'), async (req, res) => {
     if (req.file.mimetype.startsWith('image/')) type = 'image';
     if (req.file.mimetype.startsWith('audio/')) type = 'audio';
 
-    // Upload to Cloudinary using upload_stream
-    const uploadToCloudinary = (buffer) => {
-      return new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { resource_type: 'auto', folder: 'video_editor_assets' },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        stream.end(buffer);
-      });
-    };
+    // Calculate duration for video and audio
+    let assetDuration = 0;
+    if (type === 'video' || type === 'audio') {
+      try {
+        assetDuration = await probeDuration(req.file.path);
+      } catch (err) {
+        console.error('Probe duration error:', err);
+      }
+    } else {
+      assetDuration = 5; // Default image duration
+    }
 
-    const cloudinaryResult = await uploadToCloudinary(req.file.buffer);
-
-    // Default duration to 5 seconds for images, otherwise use cloudinary duration
-    const assetDuration = cloudinaryResult.duration || (type === 'image' ? 5 : 0);
+    const backendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
+    const fileUrl = `${backendUrl}/uploads/${req.file.filename}`;
 
     // Save metadata to DB
     const newAsset = new Asset({
-      original_url: cloudinaryResult.secure_url,
-      preview_url: cloudinaryResult.secure_url, // Simplification
+      original_url: fileUrl,
+      preview_url: fileUrl,
       duration: assetDuration,
       type: type,
-      public_id: cloudinaryResult.public_id,
+      public_id: req.file.filename,
     });
 
     await newAsset.save();
@@ -88,6 +104,17 @@ app.post('/api/assets', upload.single('file'), async (req, res) => {
     console.error('Upload error:', error);
     res.status(500).json({ error: 'Failed to upload asset' });
   }
+});
+
+// Download Route for forcing PC save
+app.get('/api/download/:filename', (req, res) => {
+  const filePath = path.join(__dirname, 'uploads', req.params.filename);
+  res.download(filePath, req.params.filename, (err) => {
+    if (err) {
+      console.error("Download failed:", err);
+      if (!res.headersSent) res.status(404).send("File not found");
+    }
+  });
 });
 
 app.get('/api/assets', async (req, res) => {
