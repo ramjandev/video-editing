@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { loadAssets, triggerAutosave, deleteAsset } from '@/store/thunks';
+import { loadAssets, triggerAutosave, deleteAsset, API_BASE } from '@/store/thunks';
 import { addAssetToTimeline } from '@/store/editorSlice';
 import type { Asset } from '@/types';
 
@@ -20,7 +20,7 @@ export function AssetLibrary() {
     formData.append('file', file);
 
     try {
-      await axios.post('http://localhost:3000/api/assets', formData, {
+      await axios.post(`${API_BASE}/assets`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       await dispatch(loadAssets()); // Refresh library
