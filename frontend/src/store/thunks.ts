@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { setAssets, setProject } from './editorSlice';
+import { setAssets, setProject, setExportProgressDetails } from './editorSlice';
 import type { RootState } from './index';
 
 export const API_BASE = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL + '/api' : 'http://localhost:3000/api';
@@ -119,7 +119,11 @@ export const exportVideo = createAsyncThunk(
             try {
               const data = JSON.parse(line.slice(6));
               if (data.type === 'progress') {
-                dispatch({ type: 'editor/setExportProgress', payload: data.percent });
+                dispatch(setExportProgressDetails({
+                  percent: data.percent,
+                  eta: data.etaSeconds !== undefined ? data.etaSeconds : null,
+                  status: data.status || 'rendering'
+                }));
               } else if (data.type === 'complete') {
                 dispatch({ type: 'editor/setExportUrl', payload: data.url });
               } else if (data.type === 'error') {

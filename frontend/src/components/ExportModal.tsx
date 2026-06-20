@@ -3,7 +3,7 @@ import { setExporting } from '@/store/editorSlice';
 
 export function ExportModal() {
   const dispatch = useAppDispatch();
-  const { isExporting, exportProgress, exportUrl } = useAppSelector(state => state.editor);
+  const { isExporting, exportProgress, exportUrl, exportEta, exportStatus } = useAppSelector(state => state.editor);
 
   if (!isExporting) return null;
 
@@ -47,8 +47,13 @@ export function ExportModal() {
               </div>
             </div>
             
-            <p className="text-slate-400 text-sm mb-6">
-              {exportProgress > 0 ? `Processing... ${Math.round(exportProgress)}%` : 'Initializing FFmpeg...'}
+            <p className="text-slate-200 text-sm font-medium mb-1">
+              {exportStatus === 'preparing' ? 'Preparing render engine...' : `Rendering... ${Math.round(exportProgress)}%`}
+            </p>
+            <p className="text-slate-400 text-xs mb-6">
+              {exportStatus === 'preparing' || exportEta === null
+                ? 'Calculating time remaining...'
+                : `ETA: ${exportEta} second${exportEta !== 1 ? 's' : ''} remaining`}
             </p>
 
             <button 

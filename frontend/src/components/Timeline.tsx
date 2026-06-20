@@ -285,7 +285,7 @@ export function Timeline() {
           <div className="w-20 shrink-0 bg-slate-50 sticky left-0 z-40 border-r border-slate-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]"></div>
           
           {/* The actual ruler */}
-          <div className="flex-1 relative bg-white">
+          <div className="flex-1 relative bg-white" style={{ width: `${visualDuration * pixelsPerSecond}px` }}>
             {Array.from({ length: visualDuration }).map((_, i) => {
               const time = i;
               const isMajor = time % 4 === 0;
@@ -308,7 +308,7 @@ export function Timeline() {
         </div>
 
         {/* Tracks container */}
-        <div className="flex-1 relative pb-20 w-max min-w-full">
+        <div className="flex-1 relative pb-20 w-max min-w-full" style={{ width: `${visualDuration * pixelsPerSecond + 80}px` }}>
           {sceneGraph.tracks.map((track) => (
             <div key={track.id} className="flex h-20 border-b border-slate-200 relative hover:bg-slate-50 transition-colors">
               {/* Track Header (Sticky Left) */}

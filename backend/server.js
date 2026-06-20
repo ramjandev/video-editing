@@ -33,10 +33,16 @@ import ffprobeStatic from 'ffprobe-static';
 ffmpeg.setFfmpegPath(ffmpegStatic);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 // Configure Multer for local storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'uploads'));
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -122,6 +128,7 @@ app.get('/api/assets', async (req, res) => {
     const assets = await Asset.find().sort({ createdAt: -1 });
     res.json(assets);
   } catch (error) {
+    console.error('Fetch assets error:', error);
     res.status(500).json({ error: 'Failed to fetch assets' });
   }
 });
@@ -151,7 +158,8 @@ app.post('/api/projects', async (req, res) => {
 
     res.status(201).json({ project, sceneGraph: initialSceneGraph });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to create project' });
+    console.error('Project creation error:', error);
+    res.status(500).json({ error: 'Failed to create project', message: error.message, stack: error.stack });
   }
 });
 

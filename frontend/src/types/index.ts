@@ -4,8 +4,8 @@ export interface Asset {
   preview_url: string;
   thumbnail_sprite_url?: string;
   duration: number;
-  type: 'video' | 'audio' | 'image' | 'text';
-  content?: string; // Used for text elements
+  type: "video" | "audio" | "image" | "text";
+  content?: string;
   public_id: string;
 }
 
@@ -25,18 +25,18 @@ export interface Effect {
 export interface Clip {
   id: string;
   assetId: string;
-  asset: Asset; // Reference to the full asset details
-  startTime: number; // Position on timeline
-  endTime: number;   // End position on timeline
-  trimIn: number;    // Start of the video file to use
-  trimOut: number;   // End of the video file to use
+  asset: Asset;
+  startTime: number;
+  endTime: number;
+  trimIn: number;
+  trimOut: number;
   effects?: Effect[];
   keyframes?: Keyframe[];
 }
 
 export interface Track {
   id: string;
-  type: 'video' | 'audio' | 'text';
+  type: "video" | "audio" | "text";
   clips: Clip[];
 }
 
