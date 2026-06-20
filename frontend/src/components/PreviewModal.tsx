@@ -159,7 +159,7 @@ export function PreviewModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/95 z-50 flex flex-col ">
       {/* Header */}
-      <div className="h-16 flex items-center justify-between px-6 bg-gradient-to-b from-black/50 to-transparent">
+      <div className="h-16 shrink-0 flex items-center justify-between px-6 bg-gradient-to-b from-black/50 to-transparent">
         <h2 className="text-white font-medium">Project Preview</h2>
         <button
           onClick={onClose}
@@ -180,7 +180,7 @@ export function PreviewModal({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Main Preview Area */}
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center p-4">
         <canvas
           ref={canvasRef}
           width={1920}
@@ -190,7 +190,7 @@ export function PreviewModal({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Controls */}
-      <div className="h-24 flex flex-col items-center justify-center gap-4 bg-gradient-to-t from-black/50 to-transparent pb-6">
+      <div className="h-24 shrink-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-t from-black/50 to-transparent pb-6">
         <div className="text-white font-mono text-xl tracking-wider">
           {Math.floor(playhead / 60)}:
           {(playhead % 60).toFixed(1).padStart(4, "0")}

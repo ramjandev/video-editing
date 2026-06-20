@@ -1,6 +1,6 @@
 {
-  "projectId": "6a33b0e810ed57a552e82e73",
-  "duration": 48.6072,
+  "projectId": "6a36287408418e45ad05b9ac",
+  "duration": 48.60719999999999,
   "fps": 30,
   "resolution": {
     "w": 1920,
@@ -12,7 +12,7 @@
       "type": "video",
       "clips": [
         {
-          "id": "clip_1781772526597",
+          "id": "clip_1781934203170",
           "assetId": "6a30f299b7afb646eb35f57b",
           "asset": {
             "_id": "6a30f299b7afb646eb35f57b",
@@ -26,12 +26,12 @@
             "__v": 0
           },
           "startTime": 0,
-          "endTime": 11,
+          "endTime": 10.999999999999993,
           "trimIn": 0,
           "trimOut": 11
         },
         {
-          "id": "clip_1781772527891",
+          "id": "clip_1781934211410",
           "assetId": "6a30f296b7afb646eb35f57a",
           "asset": {
             "_id": "6a30f296b7afb646eb35f57a",
@@ -44,13 +44,13 @@
             "updatedAt": "2026-06-16T06:52:06.668Z",
             "__v": 0
           },
-          "startTime": 11,
-          "endTime": 24.16,
+          "startTime": 10.999999999999993,
+          "endTime": 24.159999999999993,
           "trimIn": 0,
           "trimOut": 13.16
         },
         {
-          "id": "clip_1781772528811",
+          "id": "clip_1781934212594",
           "assetId": "6a30f293b7afb646eb35f579",
           "asset": {
             "_id": "6a30f293b7afb646eb35f579",
@@ -63,13 +63,13 @@
             "updatedAt": "2026-06-16T06:52:03.117Z",
             "__v": 0
           },
-          "startTime": 24.16,
-          "endTime": 41.4,
+          "startTime": 24.159999999999993,
+          "endTime": 41.39999999999999,
           "trimIn": 0,
           "trimOut": 17.24
         },
         {
-          "id": "clip_1781772530204",
+          "id": "clip_1781934213394",
           "assetId": "6a30f28cb7afb646eb35f577",
           "asset": {
             "_id": "6a30f28cb7afb646eb35f577",
@@ -82,19 +82,19 @@
             "updatedAt": "2026-06-16T06:51:56.372Z",
             "__v": 0
           },
-          "startTime": 41.4,
-          "endTime": 48.6072,
+          "startTime": 41.39999999999999,
+          "endTime": 48.60719999999999,
           "trimIn": 0,
           "trimOut": 7.2072
         }
       ]
     },
     {
-      "id": "track_1781772534957",
+      "id": "track_1781934218139",
       "type": "audio",
       "clips": [
         {
-          "id": "clip_1781772534957",
+          "id": "clip_1781934218139",
           "assetId": "6a30f2d8b7afb646eb35f57e",
           "asset": {
             "_id": "6a30f2d8b7afb646eb35f57e",
@@ -113,7 +113,7 @@
           "trimOut": 24.048
         },
         {
-          "id": "clip_1781772568164",
+          "id": "clip_1781934221659",
           "assetId": "6a30f2d8b7afb646eb35f57e",
           "asset": {
             "_id": "6a30f2d8b7afb646eb35f57e",
@@ -126,8 +126,8 @@
             "updatedAt": "2026-06-16T06:53:12.836Z",
             "__v": 0
           },
-          "startTime": 24.2,
-          "endTime": 48.248000000000005,
+          "startTime": 24.1,
+          "endTime": 48.147999999999996,
           "trimIn": 0,
           "trimOut": 24.048
         }
