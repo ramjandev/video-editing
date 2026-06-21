@@ -22,6 +22,33 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Middleware to dynamically rewrite local backend URLs to the request's actual host URL.
+// This solves the Private Network Access (CORS) block when accessing the app on VPS/production,
+// especially since the database stores absolute localhost URLs.
+app.use((req, res, next) => {
+  const originalJson = res.json;
+  res.json = function (data) {
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const requestOrigin = `${protocol}://${host}`;
+    
+    let jsonString = JSON.stringify(data);
+    if (jsonString) {
+      // Replace localhost:3000 URLs with the actual request origin
+      jsonString = jsonString.replace(/http:\/\/localhost:3000/g, requestOrigin);
+      
+      // Also replace BACKEND_URL from env if it is set to something else
+      if (process.env.BACKEND_URL && process.env.BACKEND_URL !== 'http://localhost:3000') {
+        jsonString = jsonString.replaceAll(process.env.BACKEND_URL, requestOrigin);
+      }
+    }
+    
+    res.setHeader('Content-Type', 'application/json');
+    return res.send(jsonString);
+  };
+  next();
+});
+
 // Serve static files from uploads directory (for exported videos)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -92,7 +119,9 @@ app.post('/api/assets', upload.single('file'), async (req, res) => {
       assetDuration = 5; // Default image duration
     }
 
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
+    const backendUrl = process.env.BACKEND_URL && !process.env.BACKEND_URL.includes('localhost')
+      ? process.env.BACKEND_URL
+      : `${req.protocol}://${req.get('host')}`;
     const fileUrl = `${backendUrl}/uploads/${req.file.filename}`;
 
     // Save metadata to DB

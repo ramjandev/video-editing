@@ -313,7 +313,8 @@ export const handleExport = async (req, res) => {
 
     command.on('end', () => {
       const filename = path.basename(outputPath);
-      res.write(`data: ${JSON.stringify({ type: 'complete', url: `http://localhost:3000/uploads/${filename}` })}\n\n`);
+      const requestOrigin = `${req.protocol}://${req.get('host')}`;
+      res.write(`data: ${JSON.stringify({ type: 'complete', url: `${requestOrigin}/uploads/${filename}` })}\n\n`);
       res.end();
     });
 

@@ -157,7 +157,7 @@ export function PreviewModal({ onClose }: { onClose: () => void }) {
   }, [dispatch]);
 
   return (
-    <div className="fixed inset-0 bg-black/95 z-50 flex flex-col ">
+    <div className="fixed inset-0 bg-black z-[100] flex flex-col">
       {/* Header */}
       <div className="h-16 shrink-0 flex items-center justify-between px-6 bg-gradient-to-b from-black/50 to-transparent">
         <h2 className="text-white font-medium">Project Preview</h2>
