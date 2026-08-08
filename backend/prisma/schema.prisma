@@ -1,0 +1,41 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Asset {
+  id                   String   @id @default(uuid())
+  original_url         String
+  preview_url          String?
+  thumbnail_sprite_url String?
+  duration             Float?
+  type                 String   @default("video")
+  public_id            String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Project {
+  id            String           @id @default(uuid())
+  title         String           @default("Untitled Project")
+  duration      Float            @default(30.0)
+  thumbnail_url String?
+  fps           Int              @default(30)
+  resolution    Json             // Store resolution as Json { w: Int, h: Int }
+  versions      ProjectVersion[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model ProjectVersion {
+  id          String   @id @default(uuid())
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   String
+  versionNum  Int
+  sceneGraph  Json     // Store scene graph as Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
