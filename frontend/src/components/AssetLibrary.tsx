@@ -1,29 +1,24 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { loadAssets, triggerAutosave, deleteAsset, API_BASE } from '@/store/thunks';
+import { triggerAutosave, deleteAsset, uploadAsset } from '@/store/thunks';
 import { addAssetToTimeline } from '@/store/editorSlice';
 import type { Asset } from '@/types';
+import { Upload, Plus, Trash2, Film, Image as ImageIcon, Music, Type, FolderOpen } from 'lucide-react';
 
 export function AssetLibrary() {
   const dispatch = useAppDispatch();
-  const assets = useAppSelector(state => state.editor.assets);
+  const assets = useAppSelector((state) => state.editor.assets);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [activeTab, setActiveTab] = useState<'All' | 'Image' | 'Video' | 'Audio'>('All');
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-
     try {
-      await axios.post(`${API_BASE}/assets`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-      await dispatch(loadAssets()); // Refresh library
+      await dispatch(uploadAsset(file)).unwrap();
     } catch (error) {
       console.error('Upload failed', error);
     } finally {
@@ -33,21 +28,18 @@ export function AssetLibrary() {
   };
 
   const handleAddToTimeline = (asset: Asset) => {
-    // For MVP, just add to a default track at time 0
     dispatch(addAssetToTimeline({ asset, trackId: 'track_1', startTime: 0 }));
     dispatch(triggerAutosave());
   };
 
   const handleDelete = (e: React.MouseEvent, assetId: string) => {
     e.stopPropagation();
-    if (confirm('Are you sure you want to delete this asset?')) {
+    if (confirm('Delete this asset from library?')) {
       dispatch(deleteAsset(assetId));
     }
   };
 
-  const [activeTab, setActiveTab] = useState<'All' | 'Image' | 'Video' | 'Audio'>('All');
-
-  const filteredAssets = assets.filter(asset => {
+  const filteredAssets = assets.filter((asset) => {
     if (activeTab === 'All') return true;
     return asset.type.toLowerCase() === activeTab.toLowerCase();
   });
@@ -59,7 +51,7 @@ export function AssetLibrary() {
       preview_url: '',
       duration: 5,
       type: 'text',
-      content: 'Title Goes There',
+      content: 'Headline Title',
       public_id: `text_${Date.now()}`,
     };
     dispatch(addAssetToTimeline({ asset: textAsset, trackId: 'track_1', startTime: 0 }));
@@ -71,104 +63,133 @@ export function AssetLibrary() {
     e.dataTransfer.effectAllowed = 'copy';
   };
 
+  const getMediaIcon = (type: string) => {
+    switch (type) {
+      case 'video':
+        return <Film className="w-3.5 h-3.5" />;
+      case 'image':
+        return <ImageIcon className="w-3.5 h-3.5" />;
+      case 'audio':
+        return <Music className="w-3.5 h-3.5" />;
+      default:
+        return <Type className="w-3.5 h-3.5" />;
+    }
+  };
+
   return (
-    <div className="w-64 bg-white border-r border-slate-200 flex flex-col h-full shadow-sm z-10">
-      <div className="p-4 border-b border-slate-100 flex flex-col gap-4">
+    <div className="w-72 bg-slate-950 border-r border-slate-800 flex flex-col h-full shadow-lg z-10 select-none">
+      <div className="p-3.5 border-b border-slate-800 flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-slate-800">My Resource</h2>
-          <button 
+          <div className="flex items-center gap-1.5 font-bold text-xs uppercase tracking-wider text-slate-300">
+            <FolderOpen className="w-4 h-4 text-blue-400" />
+            <span>Media Library</span>
+          </div>
+          <button
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-1.5 px-3 rounded-md text-sm transition-colors flex items-center gap-1 disabled:opacity-50"
+            className="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-1.5 px-3 rounded-lg text-xs transition-all flex items-center gap-1.5 disabled:opacity-50 shadow-md shadow-blue-500/20 cursor-pointer"
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-            Upload
+            <Upload className="w-3.5 h-3.5" />
+            {isUploading ? 'Uploading...' : 'Upload'}
           </button>
         </div>
-        
-        <input 
-          type="file" 
-          accept="video/*,image/*,audio/*" 
-          className="hidden" 
+
+        <input
+          type="file"
+          accept="video/*,image/*,audio/*"
+          className="hidden"
           ref={fileInputRef}
           onChange={handleUpload}
         />
-        
-        <button 
+
+        <button
           onClick={handleAddText}
-          className="w-full border border-dashed border-slate-300 hover:border-slate-400 hover:bg-slate-50 text-slate-600 font-medium py-2 px-4 rounded-md text-sm transition-colors flex items-center justify-center gap-2"
+          className="w-full border border-dashed border-slate-700 hover:border-slate-500 hover:bg-slate-900 text-slate-300 font-medium py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-          Add Text Element
+          <Plus className="w-3.5 h-3.5 text-blue-400" />
+          <span>Add Text Overlay</span>
         </button>
 
-        {/* Tabs */}
-        <div className="flex gap-4 text-sm font-medium border-b border-slate-200">
-          {['All', 'Image', 'Video', 'Audio'].map(tab => (
+        {/* Filter Tabs */}
+        <div className="flex bg-slate-900 p-1 rounded-lg border border-slate-800 text-xs">
+          {(['All', 'Video', 'Audio', 'Image'] as const).map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab as any)}
-              className={`pb-2 px-1 relative ${activeTab === tab ? 'text-blue-500' : 'text-slate-500 hover:text-slate-700'}`}
+              onClick={() => setActiveTab(tab)}
+              className={`flex-1 py-1 rounded-md text-[11px] font-medium transition-colors cursor-pointer ${
+                activeTab === tab
+                  ? 'bg-blue-600 text-white shadow-sm font-semibold'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
             >
               {tab}
-              {activeTab === tab && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-t-full" />
-              )}
             </button>
           ))}
         </div>
       </div>
-      
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
-        {filteredAssets.map(asset => (
-          <div 
-            key={asset._id} 
+
+      <div className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-slate-950">
+        {filteredAssets.map((asset) => (
+          <div
+            key={asset._id}
             draggable={true}
             onDragStart={(e) => handleDragStart(e, asset)}
-            className="bg-white border border-slate-200 rounded-lg p-2 flex flex-col gap-2 cursor-grab active:cursor-grabbing hover:border-blue-300 hover:shadow-md transition-all group relative"
+            className="bg-slate-900 border border-slate-800 rounded-lg p-2 flex flex-col gap-2 cursor-grab active:cursor-grabbing hover:border-blue-500/50 hover:shadow-md transition-all group relative"
             onClick={() => handleAddToTimeline(asset)}
           >
-            <button 
+            <button
               onClick={(e) => handleDelete(e, asset._id)}
-              className="absolute top-3 right-3 bg-red-500 text-white p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10 shadow-sm"
+              className="absolute top-3 right-3 bg-red-600/90 text-white p-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10 shadow-sm cursor-pointer"
               title="Delete asset"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              <Trash2 className="w-3 h-3" />
             </button>
-            
+
             {asset.type === 'image' ? (
-              <img 
-                src={asset.preview_url} 
-                className="w-full h-24 object-cover rounded-md bg-slate-100"
+              <img
+                src={asset.preview_url || asset.original_url}
+                className="w-full h-20 object-cover rounded bg-slate-950"
                 alt="asset"
               />
             ) : asset.type === 'audio' ? (
-              <div className="w-full h-24 bg-blue-50 text-blue-500 flex items-center justify-center rounded-md border border-blue-100">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <div className="w-full h-20 bg-emerald-950/40 text-emerald-400 flex items-center justify-center rounded border border-emerald-500/20">
+                <Music className="w-7 h-7" />
+              </div>
+            ) : asset.type === 'text' ? (
+              <div className="w-full h-20 bg-indigo-950/40 text-indigo-300 flex items-center justify-center rounded border border-indigo-500/20 font-bold text-xs p-2 text-center">
+                "{asset.content}"
               </div>
             ) : (
-              <video 
-                src={asset.preview_url} 
-                className="w-full h-24 bg-black object-contain rounded-md"
+              <video
+                src={asset.preview_url || asset.original_url}
+                className="w-full h-20 bg-black object-contain rounded"
                 preload="metadata"
               />
             )}
-            
-            <div className="text-xs text-slate-700 truncate font-medium" title={asset.original_url.split('/').pop()}>
-              {asset.original_url.split('/').pop()}
+
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] text-slate-200 truncate font-medium max-w-[170px]" title={asset.public_id || asset.original_url}>
+                {asset.public_id || asset.original_url.split('/').pop()}
+              </div>
             </div>
-            <div className="text-[10px] text-slate-400 flex justify-between font-medium">
-              <span className="uppercase">{asset.type}</span>
+
+            <div className="text-[10px] text-slate-400 flex justify-between items-center font-mono">
+              <span className="flex items-center gap-1 uppercase">
+                {getMediaIcon(asset.type)} {asset.type}
+              </span>
               <span>{asset.duration?.toFixed(1) || '0.0'}s</span>
             </div>
           </div>
         ))}
+
         {filteredAssets.length === 0 && !isUploading && (
-          <div className="text-sm text-slate-400 text-center mt-10">
-            No assets found.
+          <div className="text-xs text-slate-500 text-center mt-12 italic">
+            No media assets found. Click upload above to get started.
           </div>
         )}
       </div>
     </div>
   );
 }
+
+export default AssetLibrary;

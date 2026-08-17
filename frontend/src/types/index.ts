@@ -1,3 +1,19 @@
+export interface User {
+  _id: string;
+  id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  createdAt?: string;
+}
+
+export interface AuthResponse {
+  message: string;
+  user: User;
+  token: string;
+}
+
 export interface Asset {
   _id: string;
   original_url: string;
@@ -55,4 +71,19 @@ export interface Project {
   fps: number;
   thumbnail_url?: string;
   resolution: { w: number; h: number };
+  latestVersion?: number;
+}
+
+export interface ClusterStats {
+  totalWorkers: number;
+  idleWorkers: number;
+  busyWorkers: number;
+  totalSegmentsRendered: number;
+  workers?: Array<{
+    socketId: string;
+    userName: string;
+    status: 'IDLE' | 'BUSY';
+    cores: number;
+    jobsCompleted: number;
+  }>;
 }

@@ -1,10 +1,15 @@
-import { Controller, Post, Body, Req, Res } from '@nestjs/common';
+import { Controller, Post, Body, Req, Res, Inject, forwardRef } from '@nestjs/common';
 import * as express from 'express';
 import { ExportService } from './export.service';
+import { RenderingService } from '../rendering/rendering.service';
 
 @Controller('export')
 export class ExportController {
-  constructor(private readonly exportService: ExportService) {}
+  constructor(
+    private readonly exportService: ExportService,
+    @Inject(forwardRef(() => RenderingService))
+    private readonly renderingService: RenderingService,
+  ) {}
 
   @Post()
   async exportVideo(
@@ -17,11 +22,20 @@ export class ExportController {
     res.setHeader('Connection', 'keep-alive');
 
     const host = req.get('host');
-    const protocol = req.protocol;
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
     const requestOrigin = `${protocol}://${host}`;
 
     try {
-      await this.exportService.export(sceneGraph, res, requestOrigin);
+      await this.renderingService.startRender(
+        sceneGraph,
+        (evt) => {
+          res.write(`data: ${JSON.stringify(evt)}\n\n`);
+          if (evt.type === 'complete' || evt.type === 'error') {
+            res.end();
+          }
+        },
+        requestOrigin,
+      );
     } catch (error: any) {
       console.error('Export initiation error:', error);
       res.write(

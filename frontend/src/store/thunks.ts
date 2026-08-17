@@ -1,15 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { api, API_BASE } from '@/lib/api';
 import { setAssets, setProject, setExportProgressDetails } from './editorSlice';
 import type { RootState } from './index';
 
-export const API_BASE = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL + '/api' : 'http://localhost:3000/api';
+export { API_BASE };
 
 export const loadAssets = createAsyncThunk(
   'editor/loadAssets',
   async (_, { dispatch }) => {
     try {
-      const res = await axios.get(`${API_BASE}/assets`);
+      const res = await api.get('/assets');
       dispatch(setAssets(res.data));
     } catch (error) {
       console.error('Failed to load assets', error);
@@ -22,9 +22,11 @@ export const uploadAsset = createAsyncThunk(
   async (file: File, { dispatch }) => {
     const formData = new FormData();
     formData.append('video', file);
-    
-    const response = await axios.post(`${API_BASE}/assets`, formData);
-    dispatch(loadAssets()); // Refresh list
+
+    const response = await api.post('/assets', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    dispatch(loadAssets());
     return response.data;
   }
 );
@@ -32,20 +34,21 @@ export const uploadAsset = createAsyncThunk(
 export const deleteAsset = createAsyncThunk(
   'editor/deleteAsset',
   async (assetId: string, { dispatch }) => {
-    await axios.delete(`${API_BASE}/assets/${assetId}`);
-    dispatch(loadAssets()); // Refresh list
+    await api.delete(`/assets/${assetId}`);
+    dispatch(loadAssets());
   }
 );
 
 export const createProject = createAsyncThunk(
   'editor/createProject',
-  async (_, { dispatch }) => {
+  async (title: string | undefined, { dispatch }) => {
     try {
-      const res = await axios.post(`${API_BASE}/projects`, { title: 'New Video' });
+      const res = await api.post('/projects', { title: title || 'New Video' });
       dispatch(setProject({ 
         projectId: res.data.project._id, 
         sceneGraph: res.data.sceneGraph 
       }));
+      return res.data;
     } catch (error) {
       console.error('Failed to create project', error);
     }
@@ -56,11 +59,12 @@ export const loadProject = createAsyncThunk(
   'editor/loadProject',
   async (projectId: string, { dispatch }) => {
     try {
-      const res = await axios.get(`${API_BASE}/projects/${projectId}`);
+      const res = await api.get(`/projects/${projectId}`);
       dispatch(setProject({ 
         projectId: res.data.project._id, 
         sceneGraph: res.data.sceneGraph 
       }));
+      return res.data;
     } catch (error) {
       console.error('Failed to load project', error);
     }
@@ -76,10 +80,10 @@ export const triggerAutosave = createAsyncThunk(
     if (!activeProjectId || !sceneGraph) return;
 
     try {
-      await axios.put(`${API_BASE}/projects/${activeProjectId}/autosave`, {
+      await api.put(`/projects/${activeProjectId}/autosave`, {
         sceneGraph: sceneGraph
       });
-      console.log('Autosaved');
+      console.log('Autosaved project');
     } catch (error) {
       console.error('Autosave failed', error);
     }
@@ -95,14 +99,22 @@ export const exportVideo = createAsyncThunk(
 
     dispatch({ type: 'editor/setExporting', payload: true });
 
+    const token = localStorage.getItem('token');
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     try {
       const response = await fetch(`${API_BASE}/export`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ sceneGraph })
       });
 
-      if (!response.body) throw new Error('No response body');
+      if (!response.body) throw new Error('No response stream received');
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();

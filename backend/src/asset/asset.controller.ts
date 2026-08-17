@@ -16,12 +16,12 @@ import * as express from 'express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import * as ffmpeg from 'fluent-ffmpeg';
-import ffmpegStatic from 'ffmpeg-static';
-import ffprobeStatic from 'ffprobe-static';
+import * as ffmpegStatic from 'ffmpeg-static';
+import * as ffprobeStatic from 'ffprobe-static';
 import { AssetService } from './asset.service';
 
 // Configure FFMPEG paths
-ffmpeg.setFfmpegPath(ffmpegStatic!);
+ffmpeg.setFfmpegPath(ffmpegStatic as unknown as string);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 const probeDuration = (filePath: string): Promise<number> => {
@@ -52,7 +52,7 @@ export class AssetController {
   )
   async uploadAsset(
     @UploadedFile() file: Express.Multer.File,
-    @Req() req: express.Request,
+    @Req() req: any,
   ) {
     if (!file) {
       throw new BadRequestException('No file uploaded');
@@ -74,12 +74,14 @@ export class AssetController {
     }
 
     const host = req.get('host');
-    const protocol = req.protocol;
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
     const backendUrl =
       process.env.BACKEND_URL && !process.env.BACKEND_URL.includes('localhost')
         ? process.env.BACKEND_URL
         : `${protocol}://${host}`;
     const fileUrl = `${backendUrl}/uploads/${file.filename}`;
+
+    const userId = req.user?.id;
 
     try {
       return await this.assetService.create({
@@ -87,7 +89,8 @@ export class AssetController {
         preview_url: fileUrl,
         duration: assetDuration,
         type: type,
-        public_id: file.filename,
+        public_id: file.originalname || file.filename,
+        userId,
       });
     } catch (error) {
       console.error('Upload DB save error:', error);
@@ -96,13 +99,15 @@ export class AssetController {
   }
 
   @Get()
-  async getAllAssets() {
-    return await this.assetService.findAll();
+  async getAllAssets(@Req() req: any) {
+    const userId = req.user?.id;
+    return await this.assetService.findAll(userId);
   }
 
   @Delete(':id')
-  async deleteAsset(@Param('id') id: string) {
-    return await this.assetService.delete(id);
+  async deleteAsset(@Param('id') id: string, @Req() req: any) {
+    const userId = req.user?.id;
+    return await this.assetService.delete(id, userId);
   }
 }
 
